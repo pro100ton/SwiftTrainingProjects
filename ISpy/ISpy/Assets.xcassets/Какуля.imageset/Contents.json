@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "07377FAF-6624-4743-9CC1-78018A2F2006_1_105_c.jpeg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
