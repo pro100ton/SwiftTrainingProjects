@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import UIKit
 
 /// ENUM для хранения ошибок, которые могут возникнуть при запросе в iTunes
 enum ITunesRequestError: Error, LocalizedError {
     case somethingWentWrong
+    case imageDataMissing
 }
 
 class StoreItemController{
@@ -44,5 +46,21 @@ class StoreItemController{
         let searchResponse = try jsonDecoder.decode(SearchResponse.self, from: data)
         
         return searchResponse.results
+    }
+    
+    func setCellImage(with artworkUrl: URL) async throws -> UIImage {
+        let (data, response) = try await URLSession.shared.data(from: artworkUrl)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 200 else {
+            throw ITunesRequestError.somethingWentWrong
+        }
+        
+        guard let image = UIImage(data: data) else {
+            throw ITunesRequestError.imageDataMissing
+        }
+        
+        return image
+        
     }
 }

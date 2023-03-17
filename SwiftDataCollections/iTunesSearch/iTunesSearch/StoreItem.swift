@@ -13,6 +13,7 @@ struct StoreItem: Codable {
     var artist: String
     var kind: String
     var description: String
+    var artworkURL: URL
     
     // CodingKeys enum для маппинга ключей получаемых из JSON к проперти полей
     enum CodingKeys: String, CodingKey {
@@ -20,6 +21,7 @@ struct StoreItem: Codable {
         case artist = "artistName"
         case kind
         case description
+        case artworkURL = "artworkUrl30"
     }
     
     /* Дополнительный enum для поля description. Нужен так как маппинг для проперти
@@ -43,6 +45,7 @@ struct StoreItem: Codable {
         self.name = try valueContainer.decode(String.self, forKey: CodingKeys.name)
         self.artist = try valueContainer.decode(String.self, forKey: CodingKeys.artist)
         self.kind = try valueContainer.decode(String.self, forKey: CodingKeys.kind)
+        self.artworkURL = try valueContainer.decode(URL.self, forKey: CodingKeys.artworkURL)
         /* Для проперти `description` необходимо сначала проверить есть ли в JSON поле
          `description`
          */

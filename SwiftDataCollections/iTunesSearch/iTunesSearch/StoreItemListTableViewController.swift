@@ -66,6 +66,15 @@ class StoreItemListTableViewController: UITableViewController {
         cell.artist = item.artist
        
         /// Ничего не присваиваем картинке клекти
+        imageLoadTasks[indexPath] = Task {
+            do {
+                let imageData = try await storeItemController.setCellImage(with: item.artworkURL)
+                cell.artworkImage = imageData
+            } catch {
+                print("Something went wrong during image loading process")
+            }
+            imageLoadTasks[indexPath] = nil
+        }
         cell.artworkImage = nil
         
         // initialize a network task to fetch the item's artwork keeping track of the task
