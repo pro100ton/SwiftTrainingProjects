@@ -3,11 +3,12 @@
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Root View Controller-->
+        <!--Restaurant-->
         <scene sceneID="8sT-oM-qEq">
             <objects>
                 <tableViewController id="k3E-2j-x12" customClass="CategoryTableViewController" customModule="OrderApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -33,7 +34,7 @@
                             <outlet property="delegate" destination="k3E-2j-x12" id="8YR-Ts-ehG"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="6eQ-MS-tdK"/>
+                    <navigationItem key="navigationItem" title="Restaurant" id="6eQ-MS-tdK"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rdL-fc-BzA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -55,6 +56,9 @@
                                     <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="7sR-zc-dV5" kind="show" id="voW-z0-hha"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -67,6 +71,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7rC-BS-6iu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1599" y="-538"/>
+        </scene>
+        <!--Menu Item Detail View Controller-->
+        <scene sceneID="d5B-Dh-3Ae">
+            <objects>
+                <viewController id="7sR-zc-dV5" customClass="MenuItemDetailViewController" customModule="OrderApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Wic-iB-9cy">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="ILV-D0-spL"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="KzO-Pr-u6R"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eBc-tv-GAO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2463" y="-538"/>
         </scene>
         <!--Root View Controller-->
         <scene sceneID="nF1-OG-Gey">
@@ -137,6 +157,7 @@
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="crt-ky-Xfo" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="zqz-HJ-L2W">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
