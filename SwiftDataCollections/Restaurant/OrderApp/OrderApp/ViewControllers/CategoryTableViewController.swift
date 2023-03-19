@@ -8,38 +8,50 @@
 import UIKit
 
 class CategoryTableViewController: UITableViewController {
+    
+    // MARK: Properties
+    
+    /// Создаем инстанс класса `MenuController` для работы с веб запросами
+    let menuController = MenuController()
+    
+    /// Проперти для хранения списка категорий меню ресторана
+    var categories = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        Task {
+            do {
+                let categories = try await menuController.fetchCategories()
+                updateUI(with: categories)
+            } catch {
+                dispayError(error, title: "Failed to fetch categories")
+            }
+        }
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        /// Настраиваем количество секций в таблице категорий.
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        /// Настраиваем количество строк в таблице. Ставим значение равное количеству категорий
+        return categories.count
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        /// Выбираем идентификатор reusable cell, производим ее dequeue и проводим ее найтройку
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Category", for: indexPath)
+        
+        /// Вызов helper функции по настройке клетки
+        configureCell(cell, forCategoryAt: indexPath)
+        
         return cell
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.
@@ -85,5 +97,58 @@ class CategoryTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    // MARK: Helper methods
+    
+    /// Метод для обновления данных таблицы с использованием полученного списка категорий
+    /// На входе берет список категорий, обновляет property `self.categories` в соответствии с переданными
+    /// значениями и обновляет данные таблицы
+    /// - Parameter categories: список категорий
+    func updateUI(with categories: [String]) {
+        self.categories = categories
+        self.tableView.reloadData()
+    }
+    
+    /// Функция dispayError используется для отображения сообщений об ошибках в виде UIAlertController на экране
+    /// в iOS-приложении.
+    /// - Parameters:
+    ///   - error: Параметр error передает ошибку, которую необходиЖжмо отобразить на экране
+    ///   - title: Параметр title представляет заголовок UIAlertController.
+    func dispayError(_ error: Error, title: String) {
+        
+        /// Используется  для проверки наличия окна на экране (viewIfLoaded), прежде чем отображать
+        /// сообщение об ошибке. Если окна нет, функция просто выходит, не отображая UIAlertController добавляя warning
+        /// в выводе в консоль.
+        guard let _ = viewIfLoaded?.window else { return }
+        
+        /// Cоздаем объект `UIAlertController` с заданным заголовком `title` и сообщением, извлеченным
+        /// из переданного параметра ошибки `error.localizedDescription`. Затем добавляется действие "Dismiss"
+        /// в UIAlertController, которое закрывает `UIAlertController`, когда пользователь нажимает на кнопку "Dismiss".
+        let alert = UIAlertController(title: title,
+                                      message: error.localizedDescription,
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
+        
+        /// Используя `present(_:animated:completion:)`, функция отображает `UIAlertController` на экране
+        /// с анимацией.
+        /// Если animated равно `true`, то `UIAlertController` отобразится с анимацией, в противном случае
+        /// он появится мгновенно.
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    /// Helper функция настройки конкретных cell's таблицы категорий
+    /// - Parameters:
+    ///   - cell: Клетка, которую требуется настроить под категорию
+    ///   - indexPath: indexPath объект, для которого будет проводится настройка
+    func configureCell(_ cell: UITableViewCell, forCategoryAt indexPath: IndexPath) {
+        /// Получаем категорию, для которой необходимо настроить ряд в таблице
+        /// `indexPath.row`:  индекс, в котором будет находится информация о категории, с такимже индексом в массиве
+        let category = categories[indexPath.row]
+        
+        /// Настройка конфигурации клетки
+        var content = cell.defaultContentConfiguration()
+        content.text = category.capitalized
+        cell.contentConfiguration = content
+    }
 
 }

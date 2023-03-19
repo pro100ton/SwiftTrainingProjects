@@ -20,7 +20,7 @@ enum MenuControllerError: Error, LocalizedError {
 /// Касс-контроллер, абстракция для работы с веб сервером
 class MenuController {
     /// Инициализируем базовый URL для запросов информации с сервера
-    let baseURL: URL = URL(string: "http://localhost:8080/")!
+    let baseURL: URL = URL(string: "http://127.0.0.1:8080/")!
     
     /// Функция для получения информации о категориях с сервера.
     /// Предназначена для использования endpoint'a: `/categories`
@@ -34,10 +34,24 @@ class MenuController {
     /// запроса категория
     func fetchCategories() async throws -> [String] {
         /// Формируем URL для запроса категорий
-        let categoriesURL = baseURL.appendingPathExtension("categories")
+        let categoriesURL = baseURL.appending(path: "categories")
         
         /// Делаем запрос на свервер для получения категорий меню ресторана
         let (data, response) = try await URLSession.shared.data(from: categoriesURL)
+        
+        /// Проверяем что ответ пришел с кодом 200, в противном случае кидаем ошибку, связанную с категорией
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 200 else {
+            throw MenuControllerError.categoriesNotFound
+        }
+        
+        /// Объявляем JSON decoder для преобразования полученного ответа
+        let decoder = JSONDecoder()
+        
+        /// Пытаемся декодировать полученные данные с исользованем функции `decode(type:from:)`
+        let categoriesFromReponse = try decoder.decode(CategoriesResponse.self, from: data)
+        
+        return categoriesFromReponse.categories
     }
     
     /// Функция для получения элементов меню в зависимости от выбранной категории.
@@ -64,6 +78,18 @@ class MenuController {
         
         /// Делаем запрос на сервер для получения объектов меню
         let (data, response) = try await URLSession.shared.data(from: menuURL)
+        
+        print(data)
+       
+        /// Проверяем что ответ пришел с кодом 200, в противном случае кидаем ошибку, связанную с элементом меню
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 200 else {
+            throw MenuControllerError.menuItemsNotFound
+        }
+        
+        let decoder = JSONDecoder()
+        let menuItemsFromResponse = try decoder.decode(MenuResponse.self, from: data)
+        return menuItemsFromResponse.items
     }
     
     /// Type alias для определения того, что должен возвращать метод подтверждения заказа
@@ -95,10 +121,21 @@ class MenuController {
         let jsonEncoder = JSONEncoder()
         let jsonData = try? jsonEncoder.encode(menuIdsDict)
         
-        /// Далее необходимо поместить полученный JSON в `data` запроса
+        /// Далее необходимо помести
         request.httpBody = jsonData
         
         /// Затем вызывается метод `URLSession.data(for:delegate:)` для осуществления запроса
         let (data, response) = try await URLSession.shared.data(for: request)
+        
+        /// Проверяем что ответ пришел с кодом 200, в противном случае кидаем ошибку, связанную с элементом меню
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 200 else {
+            throw MenuControllerError.OrderRequestFailed
+        }
+        
+        let decoder = JSONDecoder()
+        let orderResponse = try decoder.decode(OrderResponse.self, from: data)
+        
+        return orderResponse.prepTime
     }
 }
