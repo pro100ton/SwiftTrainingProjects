@@ -18,6 +18,8 @@
 		7DCB1D3329C60B6B004C4618 /* MenuItemDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCB1D3229C60B6B004C4618 /* MenuItemDetailViewController.swift */; };
 		7DCB1D3629C60BF9004C4618 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCB1D3529C60BF9004C4618 /* MenuItem.swift */; };
 		7DCB1D3929C60F9D004C4618 /* ResponseModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCB1D3829C60F9D004C4618 /* ResponseModels.swift */; };
+		7DCB1D3B29C756D5004C4618 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCB1D3A29C756D5004C4618 /* Order.swift */; };
+		7DCB1D3D29C7583C004C4618 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCB1D3C29C7583C004C4618 /* MenuController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		7DCB1D3229C60B6B004C4618 /* MenuItemDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemDetailViewController.swift; sourceTree = "<group>"; };
 		7DCB1D3529C60BF9004C4618 /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		7DCB1D3829C60F9D004C4618 /* ResponseModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseModels.swift; sourceTree = "<group>"; };
+		7DCB1D3A29C756D5004C4618 /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
+		7DCB1D3C29C7583C004C4618 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +73,7 @@
 				7D60645229C5C2180084E566 /* AppDelegate.swift */,
 				7D60645429C5C2180084E566 /* SceneDelegate.swift */,
 				7D60645829C5C2180084E566 /* Main.storyboard */,
+				7DCB1D3E29C75847004C4618 /* Controllers */,
 				7DCB1D3729C60C02004C4618 /* Models */,
 				7DCB1D3429C60BCB004C4618 /* ViewControllers */,
 				7D60645B29C5C2180084E566 /* Assets.xcassets */,
@@ -94,8 +99,17 @@
 			children = (
 				7DCB1D3529C60BF9004C4618 /* MenuItem.swift */,
 				7DCB1D3829C60F9D004C4618 /* ResponseModels.swift */,
+				7DCB1D3A29C756D5004C4618 /* Order.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		7DCB1D3E29C75847004C4618 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7DCB1D3C29C7583C004C4618 /* MenuController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,9 +183,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DCB1D3D29C7583C004C4618 /* MenuController.swift in Sources */,
 				7DCB1D3629C60BF9004C4618 /* MenuItem.swift in Sources */,
 				7D60646929C5C4FD0084E566 /* MenuTableViewController.swift in Sources */,
 				7DCB1D3929C60F9D004C4618 /* ResponseModels.swift in Sources */,
+				7DCB1D3B29C756D5004C4618 /* Order.swift in Sources */,
 				7DCB1D3329C60B6B004C4618 /* MenuItemDetailViewController.swift in Sources */,
 				7D60646B29C5C50D0084E566 /* OrderTableViewController.swift in Sources */,
 				7D60645329C5C2180084E566 /* AppDelegate.swift in Sources */,
