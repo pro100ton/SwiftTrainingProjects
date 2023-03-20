@@ -63,7 +63,7 @@ class MenuController {
     /// - Returns: Массив объектов `MenuItem`
     func fetchMenuItems(forCategory categoryName: String) async throws -> [MenuItem] {
         /// Формируем URL для запроса элементов меню
-        let baseMenuURL = baseURL.appendingPathExtension("menu")
+        let baseMenuURL = baseURL.appending(path: "menu")
         
         /// Для добавления `query` параметров можно использовать `URLComponents` чтобы добавть коллекцию
         /// `URLQueryItem` объектов.
@@ -79,7 +79,6 @@ class MenuController {
         /// Делаем запрос на сервер для получения объектов меню
         let (data, response) = try await URLSession.shared.data(from: menuURL)
         
-        print(data)
        
         /// Проверяем что ответ пришел с кодом 200, в противном случае кидаем ошибку, связанную с элементом меню
         guard let httpResponse = response as? HTTPURLResponse,
@@ -89,6 +88,7 @@ class MenuController {
         
         let decoder = JSONDecoder()
         let menuItemsFromResponse = try decoder.decode(MenuResponse.self, from: data)
+        print(menuItemsFromResponse)
         return menuItemsFromResponse.items
     }
     

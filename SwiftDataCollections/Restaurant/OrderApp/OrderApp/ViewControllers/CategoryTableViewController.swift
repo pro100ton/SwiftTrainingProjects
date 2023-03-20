@@ -151,4 +151,6 @@ class CategoryTableViewController: UITableViewController {
         cell.contentConfiguration = content
     }
 
+    // MARK: Segues actions
+    
 }
