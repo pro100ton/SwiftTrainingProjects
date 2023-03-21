@@ -9,8 +9,20 @@ import UIKit
 
 class MenuItemDetailViewController: UIViewController {
     
+    // MARK: Properties
+    
     let menuItem: MenuItem
-
+    
+    // MARK: Outlets
+    
+    @IBOutlet var nameLabel: UILabel!
+    @IBOutlet var addToOrderButton: UIButton!
+    @IBOutlet var detailTextLabel: UILabel!
+    @IBOutlet var priceLabel: UILabel!
+    @IBOutlet var imageView: UIImageView!
+    
+    // MARK: Initializers
+    
     init?(coder: NSCoder, menuItem: MenuItem) {
         self.menuItem = menuItem
         super.init(coder: coder)
@@ -24,6 +36,7 @@ class MenuItemDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        updateUI()
         // Do any additional setup after loading the view.
     }
     
@@ -38,4 +51,10 @@ class MenuItemDetailViewController: UIViewController {
     }
     */
 
+    // MARK: Helper methods
+    func updateUI() {
+        self.nameLabel.text = menuItem.name
+        self.priceLabel.text = menuItem.price.formatted(.currency(code: "usd"))
+        self.detailTextLabel.text = menuItem.detailText
+    }
 }
