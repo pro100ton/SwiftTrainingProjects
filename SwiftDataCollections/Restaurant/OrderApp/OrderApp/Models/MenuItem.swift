@@ -28,4 +28,13 @@ struct MenuItem: Codable {
         case category
         case imageURL = "image_url"
     }
+    
+    static func createFailedInstance() -> MenuItem {
+        return MenuItem(id: 0,
+                        name: "Not found",
+                        detailText: "Not found",
+                        price: 0.0,
+                        category: "Not found",
+                        imageURL: URL(string: "notfound.com")!)
+    }
 }

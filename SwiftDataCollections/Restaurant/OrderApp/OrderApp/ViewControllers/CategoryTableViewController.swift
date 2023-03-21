@@ -11,38 +11,40 @@ class CategoryTableViewController: UITableViewController {
     
     // MARK: Properties
     
-    /// Создаем инстанс класса `MenuController` для работы с веб запросами
-    let menuController = MenuController()
+    /*
+     /// Создаем инстанс класса `MenuController` для работы с веб запросами
+     let menuController = MenuController()
+     */
     
     /// Проперти для хранения списка категорий меню ресторана
     var categories = [String]()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         Task {
             do {
-                let categories = try await menuController.fetchCategories()
+                let categories = try await MenuController.shared.fetchCategories()
                 updateUI(with: categories)
             } catch {
                 dispayError(error, title: "Failed to fetch categories")
             }
         }
-
+        
     }
-
+    
     // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         /// Настраиваем количество секций в таблице категорий.
         return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         /// Настраиваем количество строк в таблице. Ставим значение равное количеству категорий
         return categories.count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         /// Выбираем идентификатор reusable cell, производим ее dequeue и проводим ее найтройку
         let cell = tableView.dequeueReusableCell(withIdentifier: "Category", for: indexPath)
@@ -52,51 +54,51 @@ class CategoryTableViewController: UITableViewController {
         
         return cell
     }
-
+    
     /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
+     // Override to support conditional editing of the table view.
+     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the specified item to be editable.
+     return true
+     }
+     */
+    
     /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
+     // Override to support editing the table view.
+     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+     if editingStyle == .delete {
+     // Delete the row from the data source
+     tableView.deleteRows(at: [indexPath], with: .fade)
+     } else if editingStyle == .insert {
+     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+     }
+     }
+     */
+    
     /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
+     // Override to support rearranging the table view.
+     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+     
+     }
+     */
+    
     /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
+     // Override to support conditional rearranging of the table view.
+     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the item to be re-orderable.
+     return true
+     }
+     */
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
     
     // MARK: Helper methods
     
@@ -150,7 +152,22 @@ class CategoryTableViewController: UITableViewController {
         content.text = category.capitalized
         cell.contentConfiguration = content
     }
-
+    
     // MARK: Segues actions
     
+    
+    /// Segue action для передачи информации о выбранной категории в `MenuTableViewController`
+    @IBSegueAction func showMenu(_ coder: NSCoder, sender: Any?) -> MenuTableViewController? {
+        /// Сначала проверяется является ли отправителем клетка таблицы и какой у нажатой клетки `indexPath`
+        /// Если условия выше не выполнены, то функция не возвращает ничего
+        guard let cell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: cell)
+        else { return nil }
+        
+        /// Получаем нажатую пользователем категорию путем навигации в массиве через его `indexPath`
+        let category = categories[indexPath.row]
+        
+        /// Возвращаем экземпляр VC `MenuTableViewController` с предустановленной категорией, чтобы он
+        /// мог загрузить данные в соответствии с этой категорией
+        return MenuTableViewController(coder: coder, category: category)
+    }
 }

@@ -11,7 +11,6 @@ class MenuTableViewController: UITableViewController {
     
     // MARK: Properties
     let category: String
-    let menuController = MenuController()
     var menuItems: [MenuItem] =  [MenuItem]()
     
     // MARK: Initializers
@@ -22,6 +21,7 @@ class MenuTableViewController: UITableViewController {
     }
     
     required init?(coder: NSCoder) {
+        /// `category` должна быть инициализирована в каком-либо виде до вызова инициализатора суперкласса
         self.category = ""
         super.init(coder: coder)
     }
@@ -34,8 +34,8 @@ class MenuTableViewController: UITableViewController {
         
         Task {
             do {
-                print(self.category)
-                let menuItems = try await menuController.fetchMenuItems(forCategory: category)
+                let menuItems = try await MenuController.shared.fetchMenuItems(
+                    forCategory: category)
                 updateUI(with: menuItems)
             } catch {
                 dispayError(error, title: "Failed to fetch Menu Items for \(self.category)")
@@ -56,12 +56,7 @@ class MenuTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItem", for: indexPath)
         
-        let menuItem = menuItems[indexPath.row]
-        
-        var content = cell.defaultContentConfiguration()
-        content.text = menuItem.name
-        content.secondaryText = "$\(menuItem.price)"
-        cell.contentConfiguration = content
+        configure(cell, forItemAt: indexPath)
         return cell
     }
 
@@ -111,6 +106,7 @@ class MenuTableViewController: UITableViewController {
     */
 
     // MARK: Helper methods
+    
     /// Метод для обновления данных таблицы объектов меню
     /// - Parameter menuItems: Массив объектов `MenuItem`, которыми нужно заполнить таблицу
     func updateUI(with menuItems: [MenuItem]) {
@@ -130,5 +126,32 @@ class MenuTableViewController: UITableViewController {
                                       preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    /// Метод для конфигурации клеток такблицы
+    /// - Parameters:
+    ///   - cell: клетка таблицы для настройки
+    ///   - indexPath: `indexPath` клетки, для которой проводится настройка
+    func configure(_ cell: UITableViewCell, forItemAt indexPath: IndexPath) {
+        /// Получаем `menuItem` из массива под индексом той клектки, в которую его надо вписaть
+        let menuItem = menuItems[indexPath.row]
+        
+        /// Стандартная настройка клетки таблицы
+        var content = cell.defaultContentConfiguration()
+        content.text = menuItem.name
+        /// Настройка дополнительного текста путем форматирования его под доллары США
+        content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
+        cell.contentConfiguration = content
+    }
+    
+    // MARK: Segues
+    
+    @IBSegueAction func showMenuItem(_ coder: NSCoder,
+                                     sender: Any?) ->MenuItemDetailViewController? {
+        guard let cell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: cell)
+        else {return nil}
+        
+        let menuItem = menuItems[indexPath.row]
+        return MenuItemDetailViewController(coder: coder, menuItem: menuItem)
     }
 }
