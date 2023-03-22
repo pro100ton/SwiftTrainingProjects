@@ -72,5 +72,8 @@ class MenuItemDetailViewController: UIViewController {
                 self.addToOrderButton.transform = CGAffineTransform(scaleX: 2.0, y: 2.0)
                 self.addToOrderButton.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             },completion: nil)
+        
+        /// Добавляем в `oder` статисеского экземпляра класса `MenuController` элемент `MenuItem`
+        MenuController.shared.order.menuItems.append(menuItem)
     }
 }

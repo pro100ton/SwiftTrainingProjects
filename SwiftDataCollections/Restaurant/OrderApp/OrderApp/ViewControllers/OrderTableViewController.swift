@@ -9,18 +9,15 @@ import UIKit
 
 class OrderTableViewController: UITableViewController {
     
-    // MARK: Properties
-    /// Property для хранения пользовательского заказа
-    var order = Order()
-
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        /// Создание наблюдателя за уведомлением `MenuController.orderUpdateNotification`
+        NotificationCenter.default.addObserver(tableView!,
+                                               selector: #selector(UITableView.reloadData),
+                                               name: MenuController.orderUpdateNotification,
+                                               object: nil)
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     // MARK: - Table view data source
@@ -32,7 +29,7 @@ class OrderTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return order.menuItems.count
+        return MenuController.shared.order.menuItems.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -92,8 +89,9 @@ class OrderTableViewController: UITableViewController {
     ///   - cell: клетка таблицы для настройки
     ///   - indexPath: `indexPath` клетки, для которой проводится настройка
     func configure(_ cell: UITableViewCell, forItemAt indexPath: IndexPath) {
-        /// Получаем `menuItem` из массива под индексом той клектки, в которую его надо вписaть
-        let menuItem = order.menuItems[indexPath.row]
+        /// Используюя переменную `order` класса `MenuController`, которую мы берем из статического экземпляра
+        /// `MenuController.shared` получаем пользовательские пункты меню в заказе
+        let menuItem = MenuController.shared.order.menuItems[indexPath.row]
         
         /// Стандартная настройка клетки таблицы
         var content = cell.defaultContentConfiguration()

@@ -26,6 +26,18 @@ class MenuController {
     /// По сути - реализация паттерна `singleton`
     static let shared = MenuController()
     
+    /// Создаем переменную, в которой будет хранится заказ пользователя
+    /// Также устанвливаем `didSet`
+    var order = Order() {
+        didSet {
+            NotificationCenter.default.post(name: MenuController.orderUpdateNotification,
+                                            object: nil)
+        }
+    }
+    
+    /// Создаем статическую константу для отслеживания изменений в составе пользовательского заказа `odrer`
+    static let orderUpdateNotification = Notification.Name("MenuController.orderUpdated")
+    
     /// Функция для получения информации о категориях с сервера.
     /// Предназначена для использования endpoint'a: `/categories`
     /// GET запрос, которому на вход не требуется ничего, а на выходе должен быть получен список из строк, содержащих
