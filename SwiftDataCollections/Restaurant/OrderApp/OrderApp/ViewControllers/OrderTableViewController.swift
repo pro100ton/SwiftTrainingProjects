@@ -8,6 +8,10 @@
 import UIKit
 
 class OrderTableViewController: UITableViewController {
+    
+    // MARK: Properties
+    /// Property для хранения пользовательского заказа
+    var order = Order()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,23 +27,19 @@ class OrderTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return order.menuItems.count
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Order", for: indexPath)
+        configure(cell, forItemAt: indexPath)
         return cell
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.
@@ -85,5 +85,21 @@ class OrderTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    // MARK: Helper methods
+    /// Метод для конфигурации клеток такблицы
+    /// - Parameters:
+    ///   - cell: клетка таблицы для настройки
+    ///   - indexPath: `indexPath` клетки, для которой проводится настройка
+    func configure(_ cell: UITableViewCell, forItemAt indexPath: IndexPath) {
+        /// Получаем `menuItem` из массива под индексом той клектки, в которую его надо вписaть
+        let menuItem = order.menuItems[indexPath.row]
+        
+        /// Стандартная настройка клетки таблицы
+        var content = cell.defaultContentConfiguration()
+        content.text = menuItem.name
+        content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
+        cell.contentConfiguration = content
+    }
 
 }
