@@ -20,6 +20,7 @@
 		7DCB1D3929C60F9D004C4618 /* ResponseModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCB1D3829C60F9D004C4618 /* ResponseModels.swift */; };
 		7DCB1D3B29C756D5004C4618 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCB1D3A29C756D5004C4618 /* Order.swift */; };
 		7DCB1D3D29C7583C004C4618 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCB1D3C29C7583C004C4618 /* MenuController.swift */; };
+		7DCEFA5829CCE07700D5CC41 /* OrderConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCEFA5729CCE07700D5CC41 /* OrderConfirmationViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		7DCB1D3829C60F9D004C4618 /* ResponseModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseModels.swift; sourceTree = "<group>"; };
 		7DCB1D3A29C756D5004C4618 /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		7DCB1D3C29C7583C004C4618 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		7DCEFA5729CCE07700D5CC41 /* OrderConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderConfirmationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +92,7 @@
 				7D60646629C5C4EC0084E566 /* CategoryTableViewController.swift */,
 				7D60646829C5C4FD0084E566 /* MenuTableViewController.swift */,
 				7D60646A29C5C50D0084E566 /* OrderTableViewController.swift */,
+				7DCEFA5729CCE07700D5CC41 /* OrderConfirmationViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -192,6 +195,7 @@
 				7D60646B29C5C50D0084E566 /* OrderTableViewController.swift in Sources */,
 				7D60645329C5C2180084E566 /* AppDelegate.swift in Sources */,
 				7D60645529C5C2180084E566 /* SceneDelegate.swift in Sources */,
+				7DCEFA5829CCE07700D5CC41 /* OrderConfirmationViewController.swift in Sources */,
 				7D60646729C5C4EC0084E566 /* CategoryTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

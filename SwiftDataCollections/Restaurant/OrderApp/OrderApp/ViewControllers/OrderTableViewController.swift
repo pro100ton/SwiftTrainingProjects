@@ -9,6 +9,12 @@ import UIKit
 
 class OrderTableViewController: UITableViewController {
     
+    // MARK: Properties
+    
+    /// Проперти для хранения времени приготовления заказа, которое придет от сервера после получения ответа на
+    /// запрос о принятии заказа
+    var minutesToPrepareOrder = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -97,5 +103,20 @@ class OrderTableViewController: UITableViewController {
         content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
         cell.contentConfiguration = content
     }
-
+    
+    // MARK: Segues
+    
+    /// Segue при переходе из таблицы во вью подтверждения заказа
+    @IBSegueAction func confirmOrder(_ coder: NSCoder) -> OrderConfirmationViewController? {
+        /// Возвращаем экземпляр класса `OrderConfirmationViewController` с установленным временем
+        /// приготовления заказа
+        return OrderConfirmationViewController(coder: coder,
+                                               minutesToPrepare: minutesToPrepareOrder)
+    }
+    
+    /// Unwind segue для возврата из вью подтверждения заказа
+    @IBAction func unwindToOrderList(segue: UIStoryboardSegue) {
+        
+    }
+    
 }
