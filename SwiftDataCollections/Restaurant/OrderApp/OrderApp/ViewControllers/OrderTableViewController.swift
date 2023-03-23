@@ -12,12 +12,14 @@ class OrderTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        /// Создание кнопки режима редактирования
+        navigationItem.leftBarButtonItem = editButtonItem
+        
         /// Создание наблюдателя за уведомлением `MenuController.orderUpdateNotification`
         NotificationCenter.default.addObserver(tableView!,
                                                selector: #selector(UITableView.reloadData),
                                                name: MenuController.orderUpdateNotification,
                                                object: nil)
-
     }
 
     // MARK: - Table view data source
@@ -38,25 +40,21 @@ class OrderTableViewController: UITableViewController {
         return cell
     }
 
-    /*
-    // Override to support conditional editing of the table view.
+    /// Method for allowing user swipe-to-delete functionality
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
 
-    /*
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            MenuController.shared.order.menuItems.remove(at: indexPath.row)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
 
     /*
     // Override to support rearranging the table view.
