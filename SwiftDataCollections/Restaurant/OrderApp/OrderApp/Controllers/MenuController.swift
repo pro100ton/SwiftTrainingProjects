@@ -95,7 +95,7 @@ class MenuController {
         /// Делаем запрос на сервер для получения объектов меню
         let (data, response) = try await URLSession.shared.data(from: menuURL)
         
-       
+        
         /// Проверяем что ответ пришел с кодом 200, в противном случае кидаем ошибку, связанную с элементом меню
         guard let httpResponse = response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {
@@ -119,7 +119,7 @@ class MenuController {
     /// - Returns: Кол-во минут, которое потребуется для приготовления заказа
     func submitOrder(forMenuIDs menuIDs: [Int]) async throws -> MinutesToPrepare {
         /// Формируем URL для подтверждения заказа
-        let orderURL = baseURL.appendingPathExtension("order")
+        let orderURL = baseURL.appending(path:"order")
         
         /// Формирование POST заросов отличается от формирования GET запросов, поэтому:
         /// Для формирования POST запроса нужно сделать следующее:

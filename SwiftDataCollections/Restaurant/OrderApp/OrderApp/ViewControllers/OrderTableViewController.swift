@@ -88,6 +88,7 @@ class OrderTableViewController: UITableViewController {
     */
     
     // MARK: Helper methods
+    
     /// Метод для конфигурации клеток такблицы
     /// - Parameters:
     ///   - cell: клетка таблицы для настройки
@@ -104,6 +105,34 @@ class OrderTableViewController: UITableViewController {
         cell.contentConfiguration = content
     }
     
+    /// Хелпер функция для отправки request'a с заказом
+    func uploadOrder() {
+        /// С помощью функции `map` - перебираем массив элементов заказа и формируем новый массив, в котором
+        /// будут хранится только `id` элементов заказа
+        let menuIds = MenuController.shared.order.menuItems.map { $0.id }
+        
+        Task.init {
+            do {
+                let minutesToPrepare = try await
+                   MenuController.shared.submitOrder(forMenuIDs: menuIds)
+                minutesToPrepareOrder = minutesToPrepare
+                performSegue(withIdentifier: "confirmOrder", sender: nil)
+            } catch {
+                displayError(error, title: "Order Submission Failed")
+            }
+        }
+    }
+    
+    
+    func displayError(_ error: Error, title: String) {
+        guard let _ = viewIfLoaded?.window else { return }
+        let alert = UIAlertController(title: title, message:
+           error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .default,
+           handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     // MARK: Segues
     
     /// Segue при переходе из таблицы во вью подтверждения заказа
@@ -116,7 +145,41 @@ class OrderTableViewController: UITableViewController {
     
     /// Unwind segue для возврата из вью подтверждения заказа
     @IBAction func unwindToOrderList(segue: UIStoryboardSegue) {
+        /// Проверить используем ли мы exit segues из модального информативно окна с временем приготовления заказа
+        /// Если это она - то удаляем все объекты из заказа
+        if segue.identifier == "dismissConfirmation" {
+            MenuController.shared.order.menuItems.removeAll()
+        }
+    }
+    
+    // MARK: Actions
+    
+    /// Экшон таб бар кнопки submit
+    /// - Parameter sender: отпраиветелм должна быть `UIBarButtonItem`
+    @IBAction func submitOrder(_ sender: UIBarButtonItem) {
+        /// В первую очередь мы должны посчитать сумму заказа пользователя
+        /// Для этого воспользуемся методом `reduce`, в котором ставится изначальное значение = 0.0
+        /// Затем перебирая массив элементов заказов (`menuItem`) добавляем к 0.0 (`result`) стоимость элемента
+        let orederTotal = MenuController.shared.order.menuItems.reduce(0.0){
+            (result, menuItem) -> Double in return result + menuItem.price
+        }
         
+        /// Форматируем для долларов сумму
+        let formattedTotal = orederTotal.formatted(.currency(code: "usd"))
+        
+        /// Создаем алерт с подтверждением того, что пользователь хочет совершить заказ
+        let alertController = UIAlertController(
+            title: "Confirm order",
+            message: "You are about to submit your order with a total of \(formattedTotal)",
+            preferredStyle: .actionSheet)
+        
+        alertController.addAction(UIAlertAction(title: "Submit",
+                                                style: .default,
+                                                handler: {_ in self.uploadOrder()}
+                                               ))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        present(alertController, animated: true, completion: nil)
     }
     
 }

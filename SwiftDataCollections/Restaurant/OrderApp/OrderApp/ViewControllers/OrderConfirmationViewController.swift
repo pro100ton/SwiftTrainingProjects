@@ -31,6 +31,9 @@ class OrderConfirmationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        /// Формируем и задаем сообщения для лейбла
+        confirmationLable.text = "We started prepearing your order. It will take approximately \(minutesToPrepare) minutes"
 
         // Do any additional setup after loading the view.
     }

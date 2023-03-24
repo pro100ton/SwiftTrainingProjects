@@ -213,7 +213,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Order" id="MbP-r7-4it">
-                        <barButtonItem key="rightBarButtonItem" title="Submit" id="CeF-nX-jWr"/>
+                        <barButtonItem key="rightBarButtonItem" title="Submit" id="CeF-nX-jWr">
+                            <connections>
+                                <action selector="submitOrder:" destination="bny-9x-agh" id="1XW-RS-MIV"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <segue destination="uGE-EY-n1t" kind="presentation" identifier="confirmOrder" destinationCreationSelector="confirmOrder:" id="8zF-E6-CBZ"/>
@@ -285,20 +289,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="38" translatesAutoresizingMaskIntoConstraints="NO" id="0UJ-6q-gna">
-                                <rect key="frame" x="20" y="345.33333333333331" width="353" height="92.666666666666686"/>
+                                <rect key="frame" x="20" y="335" width="353" height="113"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vqX-l3-11w">
-                                        <rect key="frame" x="156" y="0.0" width="41.333333333333343" height="20.333333333333332"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We started prepearing your order. It will take approximately 999 minutes" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vqX-l3-11w">
+                                        <rect key="frame" x="6.3333333333333428" y="0.0" width="340.33333333333326" height="40.666666666666664"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wFF-Jf-e6s">
-                                        <rect key="frame" x="135" y="58.333333333333371" width="83.333333333333314" height="34.333333333333343"/>
+                                        <rect key="frame" x="135" y="78.666666666666686" width="83.333333333333314" height="34.333333333333343"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Dismiss"/>
                                         <connections>
-                                            <segue destination="bMO-PF-aUb" kind="unwind" unwindAction="unwindToOrderListWithSegue:" id="yVg-iE-JYx"/>
+                                            <segue destination="bMO-PF-aUb" kind="unwind" identifier="dismissConfirmation" unwindAction="unwindToOrderListWithSegue:" id="yVg-iE-JYx"/>
                                         </connections>
                                     </button>
                                 </subviews>
