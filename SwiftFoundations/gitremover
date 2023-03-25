@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Установите путь к директории, в которой необходимо удалить файлы .git
+directory="/Users/antonsalimov/Projects/Swift/SwiftFoundations"
+
+# Выполните поиск всех файлов с именем .git и удалите их с помощью команды rm
+find "$directory" -name .git -type f -print0 | xargs -0 rm -f
+
+echo "Все файлы .git удалены."
+

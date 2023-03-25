@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "Drivers'_World_Championship_trophy_2004_replica_front2_2019_Michael_Schumacher_Private_Collection.jpg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
