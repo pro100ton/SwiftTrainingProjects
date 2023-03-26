@@ -125,7 +125,6 @@ class MenuController {
         
         let decoder = JSONDecoder()
         let menuItemsFromResponse = try decoder.decode(MenuResponse.self, from: data)
-        print(menuItemsFromResponse)
         return menuItemsFromResponse.items
     }
     

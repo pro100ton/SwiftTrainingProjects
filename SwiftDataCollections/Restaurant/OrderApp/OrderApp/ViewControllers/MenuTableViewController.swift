@@ -66,7 +66,6 @@ class MenuTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItem", for: indexPath)
-        
         configure(cell, forItemAt: indexPath)
         return cell
     }
@@ -105,6 +104,30 @@ class MenuTableViewController: UITableViewController {
     ///   - cell: клетка таблицы для настройки
     ///   - indexPath: `indexPath` клетки, для которой проводится настройка
     func configure(_ cell: UITableViewCell, forItemAt indexPath: IndexPath) {
+        /// Проверка на то, что в качестве клетки используется кастомный класс `MenuItemCell`
+        guard let cell = cell as? MenuItemCell else {
+            return
+        }
+        
+        let menuItem = menuItems[indexPath.row]
+        
+        /// Производим базовую конфигурацию ячейки без картинки
+        cell.itemName = menuItem.name
+        cell.price = menuItem.price
+        cell.image = nil
+        
+        imageLoadTasks[indexPath] = Task {
+            if let image = try? await MenuController.shared.fetchImages(from: menuItem.imageURL) {
+                if let currentIndexPath = self.tableView.indexPath(for: cell),
+                   currentIndexPath == indexPath {
+                    cell.image = image
+                }
+            }
+            imageLoadTasks[indexPath] = nil
+        }
+        
+        /* Old code
+         
         /// Получаем `menuItem` из массива под индексом той клектки, в которую его надо вписaть
         let menuItem = menuItems[indexPath.row]
         
@@ -137,6 +160,8 @@ class MenuTableViewController: UITableViewController {
             imageLoadTasks[indexPath] = nil
         }
         cell.contentConfiguration = content
+         
+        */
     }
     
     // MARK: Segues

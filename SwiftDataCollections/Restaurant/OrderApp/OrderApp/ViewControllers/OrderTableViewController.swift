@@ -14,6 +14,7 @@ class OrderTableViewController: UITableViewController {
     /// Проперти для хранения времени приготовления заказа, которое придет от сервера после получения ответа на
     /// запрос о принятии заказа
     var minutesToPrepareOrder = 0
+    var imageLoadTasks: [IndexPath: Task<Void, Never>] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +27,14 @@ class OrderTableViewController: UITableViewController {
                                                selector: #selector(UITableView.reloadData),
                                                name: MenuController.orderUpdateNotification,
                                                object: nil)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        /// Проходимся по всему словарю хранения тасок и отменяем все задачи по скачиванию картинок
+        imageLoadTasks.forEach{
+            key, value in value.cancel()
+        }
     }
 
     // MARK: - Table view data source
@@ -61,31 +70,10 @@ class OrderTableViewController: UITableViewController {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    
+    override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        imageLoadTasks[indexPath]?.cancel()
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     // MARK: Helper methods
     
@@ -94,6 +82,26 @@ class OrderTableViewController: UITableViewController {
     ///   - cell: клетка таблицы для настройки
     ///   - indexPath: `indexPath` клетки, для которой проводится настройка
     func configure(_ cell: UITableViewCell, forItemAt indexPath: IndexPath) {
+        guard let cell = cell as? MenuItemCell else { return }
+        
+        let menuItem = MenuController.shared.order.menuItems[indexPath.row]
+        
+        cell.itemName = menuItem.name
+        cell.price = menuItem.price
+        cell.image = nil
+        
+        imageLoadTasks[indexPath] = Task {
+            if let image = try? await MenuController.shared.fetchImages(from: menuItem.imageURL) {
+                if let currentIndexPath = self.tableView.indexPath(for: cell),
+                   currentIndexPath == indexPath {
+                    cell.image = image
+                }
+            }
+            imageLoadTasks[indexPath] = nil
+        }
+        
+        /* Old code
+         
         /// Используюя переменную `order` класса `MenuController`, которую мы берем из статического экземпляра
         /// `MenuController.shared` получаем пользовательские пункты меню в заказе
         let menuItem = MenuController.shared.order.menuItems[indexPath.row]
@@ -104,6 +112,8 @@ class OrderTableViewController: UITableViewController {
         content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
         content.image = UIImage(systemName: "photo.on.rectangle")
         cell.contentConfiguration = content
+         
+        */
     }
     
     /// Хелпер функция для отправки request'a с заказом

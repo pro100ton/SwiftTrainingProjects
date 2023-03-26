@@ -83,7 +83,6 @@
 				7D60645B29C5C2180084E566 /* Assets.xcassets */,
 				7D60645D29C5C2180084E566 /* LaunchScreen.storyboard */,
 				7D60646029C5C2180084E566 /* Info.plist */,
-				7DD06CCD29D0A03C00D4D5BA /* MenuItemCell.swift */,
 			);
 			path = OrderApp;
 			sourceTree = "<group>";
@@ -91,6 +90,7 @@
 		7DCB1D3429C60BCB004C4618 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				7DD06CCD29D0A03C00D4D5BA /* MenuItemCell.swift */,
 				7DCB1D3229C60B6B004C4618 /* MenuItemDetailViewController.swift */,
 				7D60646629C5C4EC0084E566 /* CategoryTableViewController.swift */,
 				7D60646829C5C4FD0084E566 /* MenuTableViewController.swift */,
