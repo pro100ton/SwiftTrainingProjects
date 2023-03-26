@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Перечисление с вариантами ошибок, которые могут возникнуть при выполнении запросов к API меню ресторана
 /// В данном случае MenuControllerError является перечислением, которое реализует протокол Error, что позволяет
@@ -15,6 +16,7 @@ enum MenuControllerError: Error, LocalizedError {
     case categoriesNotFound
     case menuItemsNotFound
     case OrderRequestFailed
+    case ImageDataMissing
 }
 
 /// Касс-контроллер, абстракция для работы с веб сервером
@@ -68,6 +70,25 @@ class MenuController {
         let categoriesFromReponse = try decoder.decode(CategoriesResponse.self, from: data)
         
         return categoriesFromReponse.categories
+    }
+    
+    /// Метод для получения картинки путем ее запроса с URL, предоствленным в аргументе функции
+    /// - Parameter url: URL для получения картинки
+    /// - Returns: Объект типа `UIImage`, который будет использован в качестве подстановки загруженной картинки
+    ///     там где нужно
+    func fetchImages(from url: URL) async throws -> UIImage {
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 200 else {
+            throw MenuControllerError.ImageDataMissing
+        }
+        
+        guard let image = UIImage(data: data) else {
+            throw MenuControllerError.ImageDataMissing
+        }
+        
+        return image
     }
     
     /// Функция для получения элементов меню в зависимости от выбранной категории.

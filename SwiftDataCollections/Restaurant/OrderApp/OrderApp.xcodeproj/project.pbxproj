@@ -21,6 +21,7 @@
 		7DCB1D3B29C756D5004C4618 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCB1D3A29C756D5004C4618 /* Order.swift */; };
 		7DCB1D3D29C7583C004C4618 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCB1D3C29C7583C004C4618 /* MenuController.swift */; };
 		7DCEFA5829CCE07700D5CC41 /* OrderConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCEFA5729CCE07700D5CC41 /* OrderConfirmationViewController.swift */; };
+		7DD06CCE29D0A03C00D4D5BA /* MenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DD06CCD29D0A03C00D4D5BA /* MenuItemCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		7DCB1D3A29C756D5004C4618 /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		7DCB1D3C29C7583C004C4618 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		7DCEFA5729CCE07700D5CC41 /* OrderConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderConfirmationViewController.swift; sourceTree = "<group>"; };
+		7DD06CCD29D0A03C00D4D5BA /* MenuItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 				7D60645B29C5C2180084E566 /* Assets.xcassets */,
 				7D60645D29C5C2180084E566 /* LaunchScreen.storyboard */,
 				7D60646029C5C2180084E566 /* Info.plist */,
+				7DD06CCD29D0A03C00D4D5BA /* MenuItemCell.swift */,
 			);
 			path = OrderApp;
 			sourceTree = "<group>";
@@ -195,6 +198,7 @@
 				7D60646B29C5C50D0084E566 /* OrderTableViewController.swift in Sources */,
 				7D60645329C5C2180084E566 /* AppDelegate.swift in Sources */,
 				7D60645529C5C2180084E566 /* SceneDelegate.swift in Sources */,
+				7DD06CCE29D0A03C00D4D5BA /* MenuItemCell.swift in Sources */,
 				7DCEFA5829CCE07700D5CC41 /* OrderConfirmationViewController.swift in Sources */,
 				7D60646729C5C4EC0084E566 /* CategoryTableViewController.swift in Sources */,
 			);

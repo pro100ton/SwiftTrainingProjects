@@ -12,6 +12,8 @@ class MenuTableViewController: UITableViewController {
     // MARK: Properties
     let category: String
     var menuItems: [MenuItem] =  [MenuItem]()
+    /// Проперти словарь для хранения тасок загрузки картинок
+    var imageLoadTasks: [IndexPath: Task<Void, Never>] = [:]
     
     // MARK: Initializers
     /// Объявляем failable инициализатор для того, чтобы задать проперти category при создании экземпляра класса
@@ -26,7 +28,7 @@ class MenuTableViewController: UITableViewController {
         super.init(coder: coder)
     }
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,69 +44,39 @@ class MenuTableViewController: UITableViewController {
             }
         }
     }
-
+    
+    /// Перегружаем метод `View` для момента, когда пользователь ушел в другой `View` и этот перестал отображаться
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        /// Проходимся по всему словарю хранения тасок и отменяем все задачи по скачиванию картинок
+        imageLoadTasks.forEach{
+            key, value in value.cancel()
+        }
+    }
+    
     // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return menuItems.count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItem", for: indexPath)
         
         configure(cell, forItemAt: indexPath)
         return cell
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    /// Перегружаем метод TVC для момента, когда ячейки перестают отображаться пользователю
+    override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        /// Удалем таску загрузку картинки для ячейки, которая перестала отображаться
+        imageLoadTasks[indexPath]?.cancel()
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
     // MARK: Helper methods
     
     /// Метод для обновления данных таблицы объектов меню
@@ -143,6 +115,27 @@ class MenuTableViewController: UITableViewController {
         content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
         /// Настраиваем placeholder картинки для элементов заказа
         content.image = UIImage(systemName: "photo.on.rectangle")
+        
+        /// Здесь мы не ловим никакие ошибки, так как пользователя уведмолять об ошибках загрузки картинок
+        /// не совсем корректно, однако в реальном приложении по хорошему бы куда-то записывать логи ошибки.
+        /// Поэтому тут мы используем опциональный `try` вместо `do/catch` чтобы в случае ошибки просто сразу
+        /// выходить из таски
+        /// Также мы добавляем в словарь тасок по загрузке картинок эту самую таску
+        imageLoadTasks[indexPath] = Task {
+            if let image = try? await MenuController.shared.fetchImages(from: menuItem.imageURL) {
+                if let currentIndexPath = self.tableView.indexPath(for: cell),
+                   currentIndexPath == indexPath {
+                    var content = cell.defaultContentConfiguration()
+                    content.text = menuItem.name
+                    content.secondaryText =
+                    menuItem.price.formatted(.currency(code: "usd"))
+                    content.image = image
+                    cell.contentConfiguration = content
+                }
+            }
+            /// После успешно выполненной загрзки картинки надо убрать из словаря тасок эту таску
+            imageLoadTasks[indexPath] = nil
+        }
         cell.contentConfiguration = content
     }
     
