@@ -141,6 +141,8 @@ class MenuTableViewController: UITableViewController {
         content.text = menuItem.name
         /// Настройка дополнительного текста путем форматирования его под доллары США
         content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
+        /// Настраиваем placeholder картинки для элементов заказа
+        content.image = UIImage(systemName: "photo.on.rectangle")
         cell.contentConfiguration = content
     }
     
