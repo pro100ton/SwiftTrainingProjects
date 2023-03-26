@@ -14,6 +14,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        /// Получаем путь до временной директории пользователя с помощью функции `NSTemporaryDirectory()`
+        let temporaryDirectory = NSTemporaryDirectory()
+        
+        /// Создаем объект `URLCache`, с помощью которого задаем объеем треубемой для выделения:
+        /// Оперативной памяти
+        /// Памяти на диске устройства
+        /// Пусть до временной папки (до диска) пользователя
+        let urlCache = URLCache(
+            memoryCapacity: 25_000_000,
+            diskCapacity: 50_000_000,
+            diskPath: temporaryDirectory)
+        
+        /// Присваиваем заданные выше параметры кэша для `shared` кэша, чтобы `URLSession` использовала эти
+        /// настройки при осуществлении веб запросов
+        URLCache.shared = urlCache
         return true
     }
 
