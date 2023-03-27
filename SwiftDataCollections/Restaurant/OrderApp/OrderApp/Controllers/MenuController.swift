@@ -34,8 +34,15 @@ class MenuController {
         didSet {
             NotificationCenter.default.post(name: MenuController.orderUpdateNotification,
                                             object: nil)
+            /// Так как мы расширили класс `NSUserActivity` в папке `Restoration` добавив туда проперти `order`
+            /// теперь мы можем задавать значение этой проперти.
+            /// В данном случае мы устанавливаем его при изменении значения свойства `order` наешго класса
+            userActivity.order = order
         }
     }
+    
+    /// Объявляем проперти для хранения информации о пользовательской активности в приложении
+    var userActivity = NSUserActivity(activityType: "com.example.OrederApp.order")
     
     /// Создаем статическую константу для отслеживания изменений в составе пользовательского заказа `odrer`
     static let orderUpdateNotification = Notification.Name("MenuController.orderUpdated")
