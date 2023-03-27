@@ -31,7 +31,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             orderTabBarItem.badgeValue = String(count)
         }
     }
+    
+    /// Данный метод вызывается когда сцена уходит в background.
+    /// Метод вызывается `UIKit`'ом, который запрашивает `NSUserActivity`, для возврата когда сцена вновь будет
+    /// присоединена
+    func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
+        return MenuController.shared.userActivity
+    }
 
+
+    /// Данный метод вызывается когда сцена вновь загружена, но до того как будут загружены все view и будет
+    /// осуществлена загрузка приложения в foreground
+    /// Аргумент `restoreInteractionStateWith` будет содержать `NSUserActivity` инстанс, который мы
+    /// предоставили в методе `stateRestorationActivity`
+    /// Далее этот инстанс `NSUserActivity` мы используем для восстановления состояния прилоежния
+    func scene(_ scene: UIScene, restoreInteractionStateWith stateRestorationActivity: NSUserActivity) {
+        if let restoredOrder = stateRestorationActivity.order {
+            MenuController.shared.order = restoredOrder
+        }
+    }
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
