@@ -30,7 +30,13 @@ class CategoryTableViewController: UITableViewController {
                 dispayError(error, title: "Failed to fetch categories")
             }
         }
-        
+    }
+    
+    /// Перегружем метод для кастомизации того, что будет выполнено тогда, когда view будет загружен в приложении
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        /// Устанавливаем значение `category` enum'a `StateRestorationController` 
+        MenuController.shared.updateUserActivity(with: .categories)
     }
     
     // MARK: - Table view data source

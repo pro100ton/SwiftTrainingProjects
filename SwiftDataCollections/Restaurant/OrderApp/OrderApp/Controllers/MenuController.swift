@@ -181,4 +181,24 @@ class MenuController {
         
         return orderResponse.prepTime
     }
+    
+    /// Метод для обновления значения ключей активности пользователя `userActivity`
+    /// Он проходит по кейсу, который был передан в параметре `controller` и извлекает доступные связанные значения
+    ///     и присваивает их соответствующим ключам `userActivity`
+    /// В конце он ставит значение в проперти `controllerIdentifier` значение сцены, на которой пользователь сейчас
+    ///     находится
+    /// - Parameter controller: enum с перечилением контроллеров, которые у нас есть в приложении.
+    ///     Задан в файле `Restoration.swift`
+    func updateUserActivity(with controller: StateRestorationController) {
+        switch controller {
+        case .menu(let category):
+            userActivity.menuCategory = category
+        case .menuItemDetail(let menuItem):
+            userActivity.menuItem = menuItem
+        case .order, .categories:
+            break
+        }
+        
+        userActivity.controllerIdentifier = controller.identifier
+    }
 }

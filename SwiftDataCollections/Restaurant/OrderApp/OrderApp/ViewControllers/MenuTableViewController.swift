@@ -45,6 +45,13 @@ class MenuTableViewController: UITableViewController {
         }
     }
     
+    /// Перегружем метод для кастомизации того, что будет выполнено тогда, когда view будет загружен в приложении
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        /// Устанавливаем значение `category` enum'a `StateRestorationController`
+        MenuController.shared.updateUserActivity(with: .menu(category: category))
+    }
+    
     /// Перегружаем метод `View` для момента, когда пользователь ушел в другой `View` и этот перестал отображаться
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)

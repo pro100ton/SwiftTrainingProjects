@@ -40,6 +40,14 @@ class MenuItemDetailViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    /// Перегружем метод для кастомизации того, что будет выполнено тогда, когда view будет загружен в приложении
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        /// Устанавливаем значение `menuItemDetail` с параметром `menuItem`
+        ///     enum'a `StateRestorationController`
+        MenuController.shared.updateUserActivity(with: .menuItemDetail(menuItem))
+    }
+    
     
     /*
      // MARK: - Navigation

@@ -29,6 +29,13 @@ class OrderTableViewController: UITableViewController {
                                                object: nil)
     }
     
+    /// Перегружем метод для кастомизации того, что будет выполнено тогда, когда view будет загружен в приложении
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        /// Устанавливаем значение `category` enum'a `StateRestorationController`
+        MenuController.shared.updateUserActivity(with: .order)
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         /// Проходимся по всему словарю хранения тасок и отменяем все задачи по скачиванию картинок
