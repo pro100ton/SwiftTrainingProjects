@@ -35,6 +35,35 @@ enum StateRestorationController {
         case .order: return Identifier.order
         }
     }
+    
+    /// Инициализатор для инициализации значения `StateRestorationContoller` с помощью `NSUserActivity`
+    /// Используется для создания экземпляра `enum` для восстановления состояния после восстановления сцены
+    init?(userActivity: NSUserActivity) {
+        /// Проверяем `userActivity` на наличие ключа `controllerIdentifier`, в котором хранится информация
+        /// о активности пользователя
+        guard let identifier = userActivity.controllerIdentifier else { return nil }
+        
+        /// Если извелчение прошло успешно, то мы проходимся switch'ом по извлченному идентификатору VC и передаем
+        /// состояние, хранимое в `NSUserActivity` в новый экземпляр `StateRestorationController`
+        switch identifier {
+        case .categories:
+            self = .categories
+        case .menu:
+            if let category = userActivity.menuCategory {
+                self = .menu(category: category)
+            } else {
+                return nil
+            }
+        case .menuItemDetail:
+            if let menuItem = userActivity.menuItem {
+                self = .menuItemDetail(menuItem)
+            } else {
+                return nil
+            }
+        case .order:
+            self = .order
+        }
+    }
 }
 
 /// Создаем расширение для класса `NSUserActivity`
