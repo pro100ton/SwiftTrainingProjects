@@ -9,12 +9,13 @@ import Foundation
 import CoreLocation
 import SwiftUI
 
-struct Landmark: Hashable, Codable {
+struct Landmark: Hashable, Codable, Identifiable {
     var id: Int
     var name: String
     var park: String
     var state: String
     var description: String
+    var isFavorite: Bool
     
     /// Приватная проперти для чтения именя изображения.
     /// Приватная потому-что пользователям не нужно название картинки. Их интересует только сама картинка
@@ -32,13 +33,13 @@ struct Landmark: Hashable, Codable {
     var locationCoordinate: CLLocationCoordinate2D{
         CLLocationCoordinate2D(
             latitude: coordinates.latitude,
-            longitude: coordinates.longtitude
+            longitude: coordinates.longitude
         )
     }
     
     struct Coordinates: Hashable, Codable {
         var latitude: Double
-        var longtitude: Double
+        var longitude: Double
     }
     
 }

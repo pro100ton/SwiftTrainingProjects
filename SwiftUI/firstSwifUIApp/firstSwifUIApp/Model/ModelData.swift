@@ -6,9 +6,15 @@
 //
 
 import Foundation
+import Combine
 
-/// Загружаем данные хранения информации о местах интереса
-var landmarks: [Landmark] = load("landmarkData.json")
+final class ModelData: ObservableObject {
+    /// Загружаем данные хранения информации о местах интереса
+    /// `Observable` объект должен "публиковать" любые изменения его данных для того, чтобы "подписчики" могли
+    /// отслеживать эти изменения. Для этого используется ключевое слово `@Published`
+    @Published var landmarks: [Landmark] = load("landmarkData.json")
+}
+
 
 /// Создаем функцию, которая принимает параметры:
 /// - Parameter filename: название файла и тип объектов, котоые нужно загрузить и декодировать - `T`, где `T` должен соответствовать протоколу `Decodable`
